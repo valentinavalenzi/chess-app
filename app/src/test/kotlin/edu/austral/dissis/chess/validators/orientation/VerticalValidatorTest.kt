@@ -1,4 +1,4 @@
-package edu.austral.dissis.chess.validators
+package edu.austral.dissis.chess.validators.orientation
 import Movement
 import Square
 import edu.austral.dissis.chess.results.InvalidResult

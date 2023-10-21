@@ -1,13 +1,16 @@
-package edu.austral.dissis.chess.validators
+package edu.austral.dissis.chess.validators.obstacles
 
 import Board
 import Movement
 import Piece
 import Square
 import edu.austral.dissis.chess.results.InvalidResult
+import edu.austral.dissis.chess.validators.AndValidator
+import edu.austral.dissis.chess.validators.CompositeValidator
+import edu.austral.dissis.chess.validators.NotBackwardsValidator
+import edu.austral.dissis.chess.validators.OrValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
-import edu.austral.dissis.chess.validators.obstacles.VerticalObstacleValidator
 import edu.austral.dissis.chess.validators.orientation.HorizontalValidator
 import edu.austral.dissis.chess.validators.orientation.VerticalValidator
 import org.junit.jupiter.api.Test
@@ -43,5 +46,35 @@ class VerticalObstacleValidatorTest {
     fun checkVerticalObstacleValidator() {
         val validator = VerticalObstacleValidator(board::getPieceAt)
         assert(validator.validate(Movement(Square(0, 0), Square(0, 3))) is InvalidResult)
+    }
+
+    @Test
+    fun checkBlackVerticalObstacleValidator() {
+
+        val blackPawn = Piece(ColorType.BLACK, PieceType.PAWN, 0)
+        val blackRook = Piece(ColorType.BLACK, PieceType.ROOK, 0)
+        val blackPieces = mapOf(
+            Square(7, 7) to pawn,
+            Square(7, 6) to rook
+        )
+        val verticalValidator = VerticalValidator()
+        val notMovingBackwardsValidator = NotBackwardsValidator(ColorType.BLACK)
+        val blackPawnAndValidators = AndValidator(listOf(verticalValidator, notMovingBackwardsValidator))
+
+        val amountValidator = AmountValidator(1)
+        val firstMoveValidator = QMoveNSquaresValidator(0, 2, pawn)
+        val blackPawnOrValidator = OrValidator(listOf(amountValidator, firstMoveValidator))
+
+        val horizontalValidator = HorizontalValidator()
+        val blackRookOrValidators = OrValidator(listOf(horizontalValidator, verticalValidator))
+
+        val blackPawnComposite = CompositeValidator(listOf(blackPawnAndValidators, blackPawnOrValidator))
+        val blackRookComposite = CompositeValidator(listOf(blackRookOrValidators))
+        val blackPiecesValidator = mapOf(blackPawn to blackPawnComposite, blackRook to blackRookComposite)
+
+        val bBoard = Board(blackPieces, blackPiecesValidator, 8, 8)
+
+        val validator = VerticalObstacleValidator(bBoard::getPieceAt)
+        assert(validator.validate(Movement(Square(7, 7), Square(7, 4))) is InvalidResult)
     }
 }
