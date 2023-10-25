@@ -1,20 +1,20 @@
 package edu.austral.dissis.chess.validators.obstacles
 
-import Board
-import Movement
+import edu.austral.dissis.chess.Board
+import edu.austral.dissis.chess.Movement
 import Piece
 import Square
 import edu.austral.dissis.chess.results.InvalidResult
 import edu.austral.dissis.chess.validators.AndValidator
 import edu.austral.dissis.chess.validators.CompositeValidator
-import edu.austral.dissis.chess.validators.NotBackwardsValidator
+import edu.austral.dissis.chess.validators.other.NotBackwardsValidator
 import edu.austral.dissis.chess.validators.OrValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.orientation.HorizontalValidator
 import edu.austral.dissis.chess.validators.orientation.VerticalValidator
 import org.junit.jupiter.api.Test
-import types.ColorType
+import edu.austral.dissis.chess.types.ColorType
 import types.PieceType
 
 class VerticalObstacleValidatorTest {
@@ -44,8 +44,8 @@ class VerticalObstacleValidatorTest {
 
     @Test
     fun checkVerticalObstacleValidator() {
-        val validator = VerticalObstacleValidator(board::getPieceAt)
-        assert(validator.validate(Movement(Square(0, 0), Square(0, 3))) is InvalidResult)
+        val validator = VerticalObstacleValidator()
+        assert(validator.validate(Movement(Square(0, 0), Square(0, 3), board)) is InvalidResult)
     }
 
     @Test
@@ -74,7 +74,7 @@ class VerticalObstacleValidatorTest {
 
         val bBoard = Board(blackPieces, blackPiecesValidator, 8, 8)
 
-        val validator = VerticalObstacleValidator(bBoard::getPieceAt)
-        assert(validator.validate(Movement(Square(7, 7), Square(7, 4))) is InvalidResult)
+        val validator = VerticalObstacleValidator()
+        assert(validator.validate(Movement(Square(7, 7), Square(7, 4), bBoard)) is InvalidResult)
     }
 }

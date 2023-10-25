@@ -1,5 +1,10 @@
+package edu.austral.dissis.chess
+
+import Piece
+import Square
 import edu.austral.dissis.chess.results.ValidResult
 import edu.austral.dissis.chess.validators.CompositeValidator
+import edu.austral.dissis.chess.types.ColorType
 
 data class Board (private val availablePieces: Map<Square, Piece>, val pieceRules: Map<Piece, CompositeValidator>,
                   val rowAmount: Int, val columnAmount: Int) {
@@ -8,12 +13,12 @@ data class Board (private val availablePieces: Map<Square, Piece>, val pieceRule
         return availablePieces[position]
     }
 
-    fun setPieceAt(position: Square, piece: Piece): Board {
-        val updatedPieces = availablePieces + (position to piece)
-        return Board(updatedPieces, pieceRules, rowAmount, columnAmount)
+    fun setPieceAt(movement: Movement, piece: Piece): Board {
+        return Board(availablePieces - movement.from + (movement.to to piece), pieceRules, rowAmount, columnAmount)
     }
 
-    fun move(piece: Piece, movement: Movement): Board {
+    fun move(movement: Movement): Board {
+        val piece = getPieceAt(movement.from) ?: throw NoSuchElementException("No piece found")
         return if (pieceRules[piece]!!.validate(movement) is ValidResult) {
             val newPiece = piece.move()
             val updatedPieces = availablePieces - movement.from + (movement.to to newPiece)
@@ -24,5 +29,12 @@ data class Board (private val availablePieces: Map<Square, Piece>, val pieceRule
         }
     }
 
+    fun getAllOccupiedSquares() : List<Square> {
+        return availablePieces.keys.toList()
+    }
+
+    fun getAllPiecesOfColor(color: ColorType): Map<Square, Piece> {
+        return availablePieces.filter { it.value.color == color }
+    }
 
 }

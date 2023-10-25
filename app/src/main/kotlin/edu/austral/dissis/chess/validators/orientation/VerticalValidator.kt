@@ -1,6 +1,6 @@
 package edu.austral.dissis.chess.validators.orientation
 
-import Movement
+import edu.austral.dissis.chess.Movement
 import edu.austral.dissis.chess.results.InvalidResult
 import edu.austral.dissis.chess.validators.Validator
 import edu.austral.dissis.chess.results.Result

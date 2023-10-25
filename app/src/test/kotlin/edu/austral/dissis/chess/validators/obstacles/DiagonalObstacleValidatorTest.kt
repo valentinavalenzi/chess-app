@@ -1,21 +1,20 @@
 package edu.austral.dissis.chess.validators.obstacles
 
-import Board
-import Movement
+import edu.austral.dissis.chess.Board
+import edu.austral.dissis.chess.Movement
 import Piece
 import Square
 import edu.austral.dissis.chess.results.InvalidResult
 import edu.austral.dissis.chess.validators.AndValidator
 import edu.austral.dissis.chess.validators.CompositeValidator
-import edu.austral.dissis.chess.validators.NotBackwardsValidator
+import edu.austral.dissis.chess.validators.other.NotBackwardsValidator
 import edu.austral.dissis.chess.validators.OrValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.orientation.DiagonalValidator
-import edu.austral.dissis.chess.validators.orientation.HorizontalValidator
 import edu.austral.dissis.chess.validators.orientation.VerticalValidator
 import org.junit.jupiter.api.Test
-import types.ColorType
+import edu.austral.dissis.chess.types.ColorType
 import types.PieceType
 
 class DiagonalObstacleValidatorTest {
@@ -23,7 +22,7 @@ class DiagonalObstacleValidatorTest {
     val pawn = Piece(ColorType.WHITE, PieceType.PAWN, 0)
     val bishop = Piece(ColorType.WHITE, PieceType.BISHOP, 0)
     private val pieces = mapOf(
-        Square(2, 1) to pawn,
+        Square(1, 1) to pawn,
         Square(2, 0) to bishop
     )
     val verticalValidator = VerticalValidator()
@@ -44,12 +43,12 @@ class DiagonalObstacleValidatorTest {
 
     @Test
     fun checkDiagonalObstacleValidator() {
-        val validator = DiagonalObstacleValidator(board::getPieceAt)
-        assert(validator.validate(Movement(Square(2, 0), Square(0, 2))) is InvalidResult)
+        val validator = DiagonalObstacleValidator()
+        assert(validator.validate(Movement(Square(2, 0), Square(0, 2), board)) is InvalidResult)
     }
 
     @Test
-    fun checkBlackVerticalObstacleValidator() {
+    fun checkBlackDiagonalObstacleValidator() {
 
         val blackPawn = Piece(ColorType.BLACK, PieceType.PAWN, 0)
         val blackBishop = Piece(ColorType.BLACK, PieceType.BISHOP, 0)
@@ -60,12 +59,12 @@ class DiagonalObstacleValidatorTest {
 
         val diagonalValidator = DiagonalValidator()
         val bishopComposite = CompositeValidator(listOf(diagonalValidator))
-        val bPiecesValidator = mapOf(bishop to bishopComposite)
+        val bPiecesValidator = mapOf(blackBishop to bishopComposite)
 
         val bBoard = Board(blackPieces, bPiecesValidator, 8, 8)
 
-        val validator = DiagonalObstacleValidator(bBoard::getPieceAt)
-        assert(validator.validate(Movement(Square(2, 7), Square(0, 5))) is InvalidResult)
+        val validator = DiagonalObstacleValidator()
+        assert(validator.validate(Movement(Square(2, 7), Square(0, 5), bBoard)) is InvalidResult)
     }
 
 }

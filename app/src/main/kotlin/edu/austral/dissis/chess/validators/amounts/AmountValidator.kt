@@ -1,6 +1,6 @@
 package edu.austral.dissis.chess.validators.amounts
 
-import Movement
+import edu.austral.dissis.chess.Movement
 import edu.austral.dissis.chess.results.InvalidResult
 import edu.austral.dissis.chess.validators.Validator
 import kotlin.math.abs

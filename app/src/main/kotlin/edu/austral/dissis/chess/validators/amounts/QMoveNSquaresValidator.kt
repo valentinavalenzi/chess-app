@@ -1,6 +1,6 @@
 package edu.austral.dissis.chess.validators.amounts
 
-import Movement
+import edu.austral.dissis.chess.Movement
 import Piece
 import edu.austral.dissis.chess.results.Result
 import edu.austral.dissis.chess.results.InvalidResult

@@ -1,32 +1,28 @@
 package edu.austral.dissis.chess.validators.obstacles
 
 import edu.austral.dissis.chess.Movement
-import Square
 import edu.austral.dissis.chess.results.InvalidResult
-import edu.austral.dissis.chess.results.Result
+import edu.austral.dissis.chess.validators.Validator;
+import edu.austral.dissis.chess.results.Result;
 import edu.austral.dissis.chess.results.ValidResult
-import edu.austral.dissis.chess.validators.Validator
-import kotlin.math.abs
 
-class DiagonalObstacleValidator : Validator {
+class HorizontalObstacleValidator : Validator {
     override fun validate(movement: Movement): Result {
-        // Checks for diagonal movement
-        if (abs(movement.from.y - movement.to.y) != abs(movement.from.x - movement.to.x)) {
+        if (movement.from.y != movement.to.y) {
             return InvalidResult()
         }
 
         val xDirection = if (movement.from.x < movement.to.x) 1 else -1
-        val yDirection = if (movement.from.y < movement.to.y) 1 else -1
 
         var currentSquare = movement.from.copy()
-        currentSquare = currentSquare.copy(x = currentSquare.x + xDirection, y = currentSquare.y + yDirection)
+        currentSquare = currentSquare.copy(x = currentSquare.x + xDirection)
+
         while (currentSquare != movement.to) {
             if (movement.board.getPieceAt(currentSquare) != null) {
                 return InvalidResult()
             }
-            currentSquare = Square(currentSquare.x + xDirection, currentSquare.y + yDirection)
+            currentSquare = currentSquare.copy(x = currentSquare.x + xDirection)
         }
-
         return ValidResult()
     }
 }
