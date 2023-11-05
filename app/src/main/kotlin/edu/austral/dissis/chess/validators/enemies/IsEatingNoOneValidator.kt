@@ -1,4 +1,4 @@
-package edu.austral.dissis.chess.validators.other
+package edu.austral.dissis.chess.validators.enemies
 
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.game.Game
@@ -6,12 +6,10 @@ import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.results.Result
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.validators.Validator
-import types.PieceType
 
-class NotEatingKingValidator : Validator {
+class IsEatingNoOneValidator : Validator {
     override fun validate(movement: Movement, game: Game): Result {
-        val board = movement.board
-        val piece = board.getPieceAt(movement.to)
-        return if (piece?.type != PieceType.KING) ValidResult() else InvalidResult("You are not allowed to eat the king!")
+        val board = game.board
+        return if (board.getPieceAt(movement.to) == null) ValidResult() else InvalidResult("You are eating someone!")
     }
 }
