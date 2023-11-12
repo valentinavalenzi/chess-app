@@ -1,18 +1,19 @@
-package edu.austral.dissis.chess.adapter
+package edu.austral.dissis.checkers.adapter
 
+import edu.austral.dissis.chess.gui.*
+import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.game.Game
-import edu.austral.dissis.chess.gui.*
 import edu.austral.dissis.common.results.game.FinishGameResult
-import edu.austral.dissis.common.types.ColorType
-import edu.austral.dissis.common.results.game.GameResult
 import edu.austral.dissis.common.results.game.NextMoveResult
 import edu.austral.dissis.common.results.game.SameMoveResult
+import edu.austral.dissis.common.types.ColorType
 import types.PieceType
 
-class ChessAdapter(var game: Game) : GameEngine {
+class CheckersAdapter(var game: Game) : GameEngine {
+
+    // check for BecomeKingValidator every move, if it's valid then that piece needs to be switched to a king
     override fun applyMove(move: Move): MoveResult {
         val from = Square(move.from.column, move.from.row)
         val to = Square(move.to.column, move.to.row)
@@ -20,7 +21,7 @@ class ChessAdapter(var game: Game) : GameEngine {
         return when (val moveResult = game.move(Movement(from, to, game.board))) {
             is NextMoveResult -> createNewGameState(moveResult)
             is SameMoveResult -> InvalidMove("Invalid move")
-            is FinishGameResult -> GameOver(turnAdapter(game.turn.opposite()))
+            is FinishGameResult -> GameOver(turnAdapter(game.turn))
             else -> InvalidMove("Invalid Move")
         }
     }
@@ -38,32 +39,28 @@ class ChessAdapter(var game: Game) : GameEngine {
         )
     }
 
-}
-
-
-fun pieceAdapter(pieces: Map<Square, Piece>): List<ChessPiece> {
-    return pieces.map { (square, piece) ->
-        val color = when (piece.color) {
+    private fun turnAdapter(color: ColorType): PlayerColor {
+        return when (color) {
             ColorType.WHITE -> PlayerColor.WHITE
             ColorType.BLACK -> PlayerColor.BLACK
         }
-        val type = when (piece.type) {
-            PieceType.PAWN -> "pawn"
-            PieceType.ROOK -> "rook"
-            PieceType.KNIGHT -> "knight"
-            PieceType.BISHOP -> "bishop"
-            PieceType.QUEEN -> "queen"
-            PieceType.KING -> "king"
+    }
+
+    private fun pieceAdapter(pieces: Map<Square, Piece>): List<ChessPiece> {
+        return pieces.map { (square, piece) ->
+            val color = when (piece.color) {
+                ColorType.WHITE -> PlayerColor.WHITE
+                ColorType.BLACK -> PlayerColor.BLACK
+            }
+            val type = when (piece.type) {
+                PieceType.PAWN -> "pawn"
+                PieceType.KING -> "king"
+                else -> "unknown" // Handle any other piece types
+            }
+            val position = Position(square.y, square.x)
+
+            ChessPiece(piece.getID().toString(), color, position, type)
         }
-        val position = Position(square.y, square.x)
-
-        ChessPiece(piece.getID().toString(), color, position, type)
     }
-}
 
-fun turnAdapter(color: ColorType): PlayerColor {
-    return when (color) {
-        ColorType.WHITE -> PlayerColor.WHITE
-        ColorType.BLACK -> PlayerColor.BLACK
-    }
 }

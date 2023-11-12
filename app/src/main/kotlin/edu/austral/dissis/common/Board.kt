@@ -26,19 +26,8 @@ data class Board (val availablePieces: Map<Square, Piece>, val rowAmount: Int, v
     fun getAllPiecesOfColor(color: ColorType): Map<Square, Piece> {
         return availablePieces.filter { it.value.color == color }
     }
-
-    fun getAllPieces() : List<Piece> {
-        return availablePieces.values.toList()
-    }
-
-    fun clone(): Board {
-        return this.copy()
-    }
-
-    fun isValidSquare(square: Square): Boolean {
-        val (row, col) = square
-        return row in 1..rowAmount && col in 1..columnAmount
-    }
-
+     fun removePiece(position: Square): Board {
+         return Board(availablePieces - position, rowAmount, columnAmount)
+     }
 
 }

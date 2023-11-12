@@ -1,5 +1,6 @@
-package edu.austral.dissis.chess.classicGame
+package edu.austral.dissis.chess.classicChess
 
+import edu.austral.dissis.chess.mover.ChessMover
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
 import edu.austral.dissis.common.Board
@@ -10,7 +11,7 @@ import edu.austral.dissis.common.validators.OrValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.enemies.IsEatingEnemyValidator
-import edu.austral.dissis.chess.validators.enemies.IsEatingNoOneValidator
+import edu.austral.dissis.common.validators.game.IsEatingNoOneValidator
 import edu.austral.dissis.common.validators.obstacles.DiagonalObstacleValidator
 import edu.austral.dissis.common.validators.obstacles.HorizontalObstacleValidator
 import edu.austral.dissis.common.validators.obstacles.VerticalObstacleValidator
@@ -24,7 +25,7 @@ import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
 import edu.austral.dissis.common.validators.game.NotEatingSameColor
 import types.PieceType
 
-class ClassicGameSetup {
+class ClassicChessSetup {
 
     val globalValidations = listOf(
         IsInsideBoardValidator(),
@@ -283,7 +284,7 @@ class ClassicGameSetup {
     fun createClassicGame(): Game {
         return Game(
             createClassicBoard(), ColorType.WHITE, globalValidations,
-            createValidatorsMap(), listOf(CheckMateValidator())
+            createValidatorsMap(), listOf(CheckMateValidator()), ChessMover()
         )
     }
 }

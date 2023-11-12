@@ -1,4 +1,4 @@
-package edu.austral.dissis.chess.validators.enemies
+package edu.austral.dissis.common.validators.game
 
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.game.Game

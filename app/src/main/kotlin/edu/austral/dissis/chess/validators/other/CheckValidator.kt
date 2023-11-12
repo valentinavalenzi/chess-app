@@ -9,7 +9,7 @@ import edu.austral.dissis.common.results.Result
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.validators.Validator
 import edu.austral.dissis.common.types.ColorType
-import edu.austral.dissis.chess.validators.getKingPosition
+import edu.austral.dissis.common.utils.getKingPosition
 import edu.austral.dissis.common.game.Game
 
 class CheckValidator : Validator {
