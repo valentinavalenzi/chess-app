@@ -120,7 +120,7 @@ class ClassicChessSetup {
                                     listOf(
                                         VerticalValidator(),
                                         VerticalObstacleValidator(),
-                                        QMoveNSquaresValidator(0, 2, piece),
+                                        QMoveNSquaresValidator(0, 2, piece.type),
                                         NotBackwardsValidator(ColorType.WHITE),
                                         IsEatingNoOneValidator(),
                                     )
@@ -152,7 +152,7 @@ class ClassicChessSetup {
                                     listOf(
                                         VerticalValidator(),
                                         VerticalObstacleValidator(),
-                                        QMoveNSquaresValidator(0, 2, piece),
+                                        QMoveNSquaresValidator(0, 2, piece.type),
                                         NotBackwardsValidator(ColorType.BLACK),
                                         IsEatingNoOneValidator(),
                                     )

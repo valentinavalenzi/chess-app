@@ -42,10 +42,6 @@ class Client() {
         client.send(Message("move", move))
     }
 
-    fun connect() {
-        client.connect()
-    }
-
     fun disconnect() {
         client.closeConnection()
     }
