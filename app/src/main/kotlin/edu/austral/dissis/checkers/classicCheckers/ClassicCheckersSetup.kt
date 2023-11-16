@@ -1,20 +1,17 @@
 package edu.austral.dissis.checkers.classicCheckers
 
-import edu.austral.dissis.checkers.CheckersMover
+import edu.austral.dissis.checkers.mover.CheckersMover
 import edu.austral.dissis.checkers.validators.IsEatingValidator
 import edu.austral.dissis.checkers.validators.NoEnemyLeftValidator
-import edu.austral.dissis.checkers.validators.NoMoreMovesValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
 import edu.austral.dissis.common.game.Game
-import edu.austral.dissis.common.mover.Mover
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.AndValidator
 import edu.austral.dissis.common.validators.CompositeValidator
 import edu.austral.dissis.common.validators.OrValidator
-import edu.austral.dissis.common.validators.Validator
 import edu.austral.dissis.common.validators.game.IsEatingNoOneValidator
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
 import edu.austral.dissis.common.validators.game.NotEatingSameColor

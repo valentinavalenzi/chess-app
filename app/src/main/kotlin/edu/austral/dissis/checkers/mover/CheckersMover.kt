@@ -1,4 +1,4 @@
-package edu.austral.dissis.checkers
+package edu.austral.dissis.checkers.mover
 
 import edu.austral.dissis.checkers.validators.BecomeKingValidator
 import edu.austral.dissis.common.Movement

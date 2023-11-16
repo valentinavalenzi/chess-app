@@ -12,12 +12,12 @@ import edu.austral.dissis.common.utils.movesFinder
 import edu.austral.dissis.common.validators.EndGameValidator
 import edu.austral.dissis.common.validators.Validator
 
-class CheckMateValidator () : EndGameValidator {
+class CheckMateValidator : EndGameValidator {
 
     private val checkValidator = CheckValidator()
     override fun validate(movement: Movement, game: Game): GameResult {
         val board = game.board
-        val oppositeColor = game.turn.opposite()
+        val oppositeColor = game.turn
         val enemyPieces = board.getAllPiecesOfColor(oppositeColor)
         for ((square) in enemyPieces) {
             val possibleMovements = movesFinder(square, game)
