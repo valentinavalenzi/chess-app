@@ -25,7 +25,8 @@ data class Game(
 ) {
 
     fun move(movement: Movement): GameResult {
-        val piece = this.board.getPieceAt(movement.from) ?: return SameMoveResult("No piece found at the source position")
+        val piece =
+            this.board.getPieceAt(movement.from) ?: return SameMoveResult("No piece found at the source position")
         if (piece.color == turn && pieceRules[piece]?.validate(movement, this) is ValidResult) {
             val checkGeneralValidations = generalValidations(movement)
             if (checkGeneralValidations is SameMoveResult) return checkGeneralValidations
@@ -65,14 +66,22 @@ data class Game(
         val newPieceRules = pieceRules.toMutableMap()
         if (newPiece != null) {
             newPieceRules.remove(oldPiece)
-            newPieceRules[newPiece] = pieceRules[oldPiece] ?: error("No rules found for the old piece")
-            return newPieceRules
+            if (newPiece.type == oldPiece.type) {
+                newPieceRules[newPiece] = pieceRules[oldPiece] ?: error("No rules found for the old piece")
+                return newPieceRules
+            }
         }
         return newPieceRules
     }
 
-    private fun winningConditions(movement: Movement, winningValidations: List<EndGameValidator>, newGame: Game): GameResult {
-        return if (winningValidations.any() {it.validate(movement, newGame) is FinishGameResult}) FinishGameResult(newGame.turn)
+    private fun winningConditions(
+        movement: Movement,
+        winningValidations: List<EndGameValidator>,
+        newGame: Game
+    ): GameResult {
+        return if (winningValidations.any() { it.validate(movement, newGame) is FinishGameResult }) FinishGameResult(
+            newGame.turn
+        )
         else NextMoveResult(newGame)
     }
 

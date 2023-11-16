@@ -99,10 +99,12 @@ class ClassicCheckersSetup {
                     )
                 )
 
-                PieceType.KING -> map = map.plus(piece to CompositeValidator(listOf()))
+                PieceType.KING -> map = map.plus(
+                    piece to CompositeValidator(listOf())
+                )
+
                 else -> {}
             }
-
         }
         return map
     }

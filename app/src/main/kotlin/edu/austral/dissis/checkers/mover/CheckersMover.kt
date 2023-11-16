@@ -8,6 +8,7 @@ import edu.austral.dissis.common.game.Game
 import edu.austral.dissis.common.mover.Mover
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.types.ColorType
+import edu.austral.dissis.common.validators.CompositeValidator
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
 import types.PieceType
 
@@ -15,17 +16,21 @@ class CheckersMover : Mover {
     override fun move(game: Game, movement: Movement): Game {
         val middleSquare = calculateMiddleSquare(movement)
         val newBoard = game.board.move(movement).removePiece(middleSquare)
-        val newGame = Game(newBoard, game.turn, game.generalValidators,
-                            game.newPieceRules(newBoard, movement),
-                            game.winningValidations, game.mover)
+        val newGame = Game(
+            newBoard, game.turn, game.generalValidators,
+            game.newPieceRules(newBoard, movement),
+            game.winningValidations, game.mover
+        )
         if (hasEaten(game, newGame) && canEatMore(newGame, movement.to)) return newGame
         if (BecomeKingValidator().validate(movement, game) is ValidResult) {
-            return turnPawnIntoKing(movement.to, game)
+            return turnPawnIntoKing(movement, game)
         }
-        return Game(newBoard, game.switchTurn(),
+        return Game(
+            newBoard, game.switchTurn(),
             game.generalValidators,
             game.newPieceRules(newBoard, movement),
-            game.winningValidations, game.mover)
+            game.winningValidations, game.mover
+        )
     }
 
     private fun calculateMiddleSquare(movement: Movement): Square {
@@ -37,7 +42,8 @@ class CheckersMover : Mover {
     }
 
     private fun hasEaten(game: Game, newGame: Game): Boolean {
-        val eatenPieces = game.board.getAllPiecesOfColor(game.turn.opposite()).size - newGame.board.getAllPiecesOfColor(game.turn.opposite()).size
+        val eatenPieces =
+            game.board.getAllPiecesOfColor(game.turn.opposite()).size - newGame.board.getAllPiecesOfColor(game.turn.opposite()).size
         return eatenPieces > 0
     }
 
@@ -59,7 +65,7 @@ class CheckersMover : Mover {
         return false // No more capture moves found
     }
 
-    private fun checkersMovesFinder(square: Square, game: Game) : List<Movement> {
+    private fun checkersMovesFinder(square: Square, game: Game): List<Movement> {
         val piece = game.board.getPieceAt(square) ?: return emptyList()
         val moves = mutableListOf<Movement>()
         val directions = if (piece.color == ColorType.WHITE) listOf(2, -2) else listOf(-2, 2)
@@ -68,7 +74,11 @@ class CheckersMover : Mover {
             for (dy in directions) {
                 val destination = Square(square.x + dx, square.y + dy)
                 if (game.pieceRules[piece]?.validate(Movement(square, destination, game.board), game) is ValidResult) {
-                    if (IsInsideBoardValidator().validate(Movement(square, destination, game.board), game) is ValidResult)
+                    if (IsInsideBoardValidator().validate(
+                            Movement(square, destination, game.board),
+                            game
+                        ) is ValidResult
+                    )
                         moves.add(Movement(square, destination, game.board))
                 }
             }
@@ -76,13 +86,16 @@ class CheckersMover : Mover {
         return moves
     }
 
-    private fun turnPawnIntoKing(square: Square, game: Game) : Game {
-        val oldPawn = game.board.getPieceAt(square) ?: throw NoSuchElementException("No piece found")
+    private fun turnPawnIntoKing(movement: Movement, game: Game): Game {
+        val oldPawn = game.board.getPieceAt(movement.from) ?: throw NoSuchElementException("No piece found")
         val newKing = Piece(oldPawn.color, PieceType.KING, oldPawn.movementQuantity, oldPawn.id)
-        val newBoard = game.board.setPieceAt(Movement(square, square, game.board), newKing)
-        return Game(newBoard, game.turn, game.generalValidators,
-            game.newPieceRules(newBoard, Movement(square, square, game.board)),
-            game.winningValidations, game.mover)
+        val newBoard = game.board.setPieceAt(Movement(movement.from, movement.to, game.board), newKing)
+        val newBoardWithoutMiddlePiece = newBoard.removePiece(calculateMiddleSquare(movement))
+        return Game(
+            newBoardWithoutMiddlePiece, game.turn.opposite(), game.generalValidators,
+            game.pieceRules - oldPawn + (newKing to CompositeValidator(listOf())),
+            game.winningValidations, game.mover
+        )
     }
 
 }
