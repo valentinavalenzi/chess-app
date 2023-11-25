@@ -30,4 +30,8 @@ data class Board (val availablePieces: Map<Square, Piece>, val rowAmount: Int, v
          return Board(availablePieces - position, rowAmount, columnAmount)
      }
 
+    fun addPiece(piece: Piece, square: Square): Board {
+        return Board(availablePieces + (square to piece), rowAmount, columnAmount)
+    }
+
 }

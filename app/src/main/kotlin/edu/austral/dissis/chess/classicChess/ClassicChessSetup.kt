@@ -1,17 +1,23 @@
 package edu.austral.dissis.chess.classicChess
 
 import edu.austral.dissis.chess.mover.ChessMover
-import edu.austral.dissis.common.Piece
-import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.Board
-import edu.austral.dissis.common.game.Game
-import edu.austral.dissis.common.validators.AndValidator
-import edu.austral.dissis.common.validators.CompositeValidator
-import edu.austral.dissis.common.validators.OrValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.enemies.IsEatingEnemyValidator
-import edu.austral.dissis.common.validators.game.IsEatingNoOneValidator
+import edu.austral.dissis.chess.validators.other.CheckMateValidator
+import edu.austral.dissis.chess.validators.other.CheckValidator
+import edu.austral.dissis.chess.validators.other.NotEatingKingValidator
+import edu.austral.dissis.common.Board
+import edu.austral.dissis.common.Piece
+import edu.austral.dissis.common.Square
+import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.types.ColorType
+import edu.austral.dissis.common.validators.AndValidator
+import edu.austral.dissis.common.validators.OrValidator
+import edu.austral.dissis.common.validators.moves.IsEatingNoOneValidator
+import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
+import edu.austral.dissis.common.validators.orientation.NotBackwardsValidator
+import edu.austral.dissis.common.validators.moves.NotEatingSameColor
 import edu.austral.dissis.common.validators.obstacles.DiagonalObstacleValidator
 import edu.austral.dissis.common.validators.obstacles.HorizontalObstacleValidator
 import edu.austral.dissis.common.validators.obstacles.VerticalObstacleValidator
@@ -19,10 +25,6 @@ import edu.austral.dissis.common.validators.orientation.DiagonalValidator
 import edu.austral.dissis.common.validators.orientation.HorizontalValidator
 import edu.austral.dissis.common.validators.orientation.LValidator
 import edu.austral.dissis.common.validators.orientation.VerticalValidator
-import edu.austral.dissis.chess.validators.other.*
-import edu.austral.dissis.common.types.ColorType
-import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
-import edu.austral.dissis.common.validators.game.NotEatingSameColor
 import types.PieceType
 
 class ClassicChessSetup {
@@ -106,78 +108,44 @@ class ClassicChessSetup {
         Square(8, 8) to whiteRook2
     )
 
-    fun createValidatorsMap(): Map<Piece, CompositeValidator> {
-        var map = emptyMap<Piece, CompositeValidator>()
+    fun createValidatorsMap(): Map<Piece, AndValidator> {
+        var map = emptyMap<Piece, AndValidator>()
         val pieces = classicPieces.values.toList()
         for (piece in pieces) {
             when (piece.type) {
 
                 PieceType.PAWN -> {
-                    if (piece.color == ColorType.WHITE) {
-                        val or = OrValidator(
-                            listOf(
-                                AndValidator(
-                                    listOf(
-                                        VerticalValidator(),
-                                        VerticalObstacleValidator(),
-                                        QMoveNSquaresValidator(0, 2, piece.type),
-                                        NotBackwardsValidator(ColorType.WHITE),
-                                        IsEatingNoOneValidator(),
-                                    )
-                                ),
-                                AndValidator(
-                                    listOf(
-                                        VerticalValidator(),
-                                        VerticalObstacleValidator(),
-                                        AmountValidator(1),
-                                        NotBackwardsValidator(ColorType.WHITE),
-                                        IsEatingNoOneValidator(),
-                                    )
-                                ),
-                                AndValidator(
-                                    listOf(
-                                        DiagonalValidator(),
-                                        AmountValidator(1),
-                                        IsEatingEnemyValidator(),
-                                        NotBackwardsValidator(ColorType.WHITE)
-                                    )
+                    val or = OrValidator(
+                        listOf(
+                            AndValidator(
+                                listOf(
+                                    VerticalValidator(),
+                                    VerticalObstacleValidator(),
+                                    QMoveNSquaresValidator(0, 2, piece.type),
+                                    NotBackwardsValidator(),
+                                    IsEatingNoOneValidator(),
+                                )
+                            ),
+                            AndValidator(
+                                listOf(
+                                    VerticalValidator(),
+                                    VerticalObstacleValidator(),
+                                    AmountValidator(1),
+                                    NotBackwardsValidator(),
+                                    IsEatingNoOneValidator(),
+                                )
+                            ),
+                            AndValidator(
+                                listOf(
+                                    DiagonalValidator(),
+                                    AmountValidator(1),
+                                    IsEatingEnemyValidator(),
+                                    NotBackwardsValidator()
                                 )
                             )
                         )
-                        map = map + mapOf(piece to CompositeValidator(listOf(or)))
-                    } else {
-                        val or = OrValidator(
-                            listOf(
-                                AndValidator(
-                                    listOf(
-                                        VerticalValidator(),
-                                        VerticalObstacleValidator(),
-                                        QMoveNSquaresValidator(0, 2, piece.type),
-                                        NotBackwardsValidator(ColorType.BLACK),
-                                        IsEatingNoOneValidator(),
-                                    )
-                                ),
-                                AndValidator(
-                                    listOf(
-                                        VerticalValidator(),
-                                        VerticalObstacleValidator(),
-                                        AmountValidator(1),
-                                        NotBackwardsValidator(ColorType.BLACK),
-                                        IsEatingNoOneValidator(),
-                                    )
-                                ),
-                                AndValidator(
-                                    listOf(
-                                        DiagonalValidator(),
-                                        AmountValidator(1),
-                                        IsEatingEnemyValidator(),
-                                        NotBackwardsValidator(ColorType.BLACK)
-                                    )
-                                )
-                            )
-                        )
-                        map = map + mapOf(piece to CompositeValidator(listOf(or)))
-                    }
+                    )
+                    map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
 
                 PieceType.ROOK -> {
@@ -197,11 +165,11 @@ class ClassicChessSetup {
                             )
                         )
                     )
-                    map = map + mapOf(piece to CompositeValidator(listOf(or)))
+                    map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
 
                 PieceType.KNIGHT -> {
-                    map = map + mapOf(piece to CompositeValidator(listOf(LValidator())))
+                    map = map + mapOf(piece to AndValidator(listOf(LValidator())))
                 }
 
                 PieceType.BISHOP -> {
@@ -215,7 +183,7 @@ class ClassicChessSetup {
                             )
                         )
                     )
-                    map = map + mapOf(piece to CompositeValidator(listOf(or)))
+                    map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
 
                 PieceType.QUEEN -> {
@@ -241,7 +209,7 @@ class ClassicChessSetup {
                             )
                         )
                     )
-                    map = map + mapOf(piece to CompositeValidator(listOf(or)))
+                    map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
 
                 PieceType.KING -> {
@@ -270,7 +238,7 @@ class ClassicChessSetup {
                             )
                         )
                     )
-                    map = map + mapOf(piece to CompositeValidator(listOf(or)))
+                    map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
             }
         }
@@ -284,7 +252,7 @@ class ClassicChessSetup {
     fun createClassicGame(): Game {
         return Game(
             createClassicBoard(), ColorType.WHITE, globalValidations,
-            createValidatorsMap(), listOf(CheckMateValidator()), ChessMover()
+            createValidatorsMap(), listOf(CheckMateValidator()), listOf(ChessMover())
         )
     }
 }

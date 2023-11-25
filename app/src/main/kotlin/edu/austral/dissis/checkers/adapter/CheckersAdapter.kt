@@ -20,7 +20,7 @@ class CheckersAdapter(var game: Game) : GameEngine {
 
         return when (val moveResult = game.move(Movement(from, to, game.board))) {
             is NextMoveResult -> createNewGameState(moveResult)
-            is SameMoveResult -> InvalidMove("Invalid move")
+            is SameMoveResult -> InvalidMove(moveResult.reason)
             is FinishGameResult -> GameOver(turnAdapter(game.turn))
             else -> InvalidMove("Invalid Move")
         }

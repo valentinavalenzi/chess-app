@@ -5,15 +5,12 @@ import edu.austral.dissis.common.game.Game
 import edu.austral.dissis.common.mover.Mover
 
 class ChessMover : Mover {
-
-    // missing pawn promotion, enroque
+    override fun canExecuteMove(game: Game, movement: Movement): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun move(game: Game, movement: Movement): Game {
         val newBoard = game.board.move(movement)
-        return Game(newBoard, game.switchTurn(),
-            game.generalValidators,
-            game.newPieceRules(newBoard, movement),
-            game.winningValidations, game.mover)
+        return game.copy(newBoard, game.switchTurn())
     }
-
 }

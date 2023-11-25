@@ -1,8 +1,11 @@
 package edu.austral.dissis.checkers.classicCheckers
 
-import edu.austral.dissis.checkers.mover.CheckersMover
+import edu.austral.dissis.checkers.mover.CaptureMover
+import edu.austral.dissis.checkers.mover.CommonCheckersMover
+import edu.austral.dissis.checkers.mover.PromotionMover
 import edu.austral.dissis.checkers.validators.IsEatingValidator
-import edu.austral.dissis.checkers.validators.NoEnemyLeftValidator
+import edu.austral.dissis.checkers.validators.MustCaptureValidator
+import edu.austral.dissis.common.validators.game.NoEnemyLeftValidator
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.Piece
@@ -10,18 +13,20 @@ import edu.austral.dissis.common.Square
 import edu.austral.dissis.common.game.Game
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.AndValidator
-import edu.austral.dissis.common.validators.CompositeValidator
 import edu.austral.dissis.common.validators.OrValidator
-import edu.austral.dissis.common.validators.game.IsEatingNoOneValidator
+import edu.austral.dissis.common.validators.moves.IsEatingNoOneValidator
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
-import edu.austral.dissis.common.validators.game.NotEatingSameColor
+import edu.austral.dissis.common.validators.orientation.NotBackwardsValidator
+import edu.austral.dissis.common.validators.moves.NotEatingSameColor
 import edu.austral.dissis.common.validators.orientation.DiagonalValidator
 import types.PieceType
 
 class ClassicCheckersSetup {
 
-    val mover = CheckersMover()
-    val globalValidators = listOf(NotEatingSameColor(), IsInsideBoardValidator(), DiagonalValidator());
+    val movers = listOf(CommonCheckersMover(), CaptureMover(), PromotionMover(PieceType.KING))
+    val globalValidators = listOf(
+        NotEatingSameColor(), IsInsideBoardValidator(),
+                                    DiagonalValidator(), MustCaptureValidator())
 
     val blackPawn1 = Piece(ColorType.BLACK, PieceType.PAWN, 0, 1);
     val blackPawn2 = Piece(ColorType.BLACK, PieceType.PAWN, 0, 2);
@@ -81,18 +86,18 @@ class ClassicCheckersSetup {
         return Board(classicPieces, 8, 8)
     }
 
-    private fun createValidatorsMap(): Map<Piece, CompositeValidator> {
-        var map = emptyMap<Piece, CompositeValidator>()
+    private fun createValidatorsMap(): Map<Piece, AndValidator> {
+        var map = emptyMap<Piece, AndValidator>()
         val pieces = classicPieces.values.toList()
         for (piece in pieces) {
             when (piece.type) {
                 PieceType.PAWN -> map = map.plus(
-                    piece to CompositeValidator(
+                    piece to AndValidator(
                         listOf(
                             OrValidator(
                                 listOf(
-                                    AndValidator(listOf(IsEatingNoOneValidator(), AmountValidator(1))),
-                                    AndValidator(listOf(IsEatingValidator(), AmountValidator(2)))
+                                    AndValidator(listOf(NotBackwardsValidator(), IsEatingNoOneValidator(), AmountValidator(1))),
+                                    AndValidator(listOf(NotBackwardsValidator(), IsEatingValidator(), AmountValidator(2)))
                                 )
                             )
                         )
@@ -100,7 +105,7 @@ class ClassicCheckersSetup {
                 )
 
                 PieceType.KING -> map = map.plus(
-                    piece to CompositeValidator(listOf())
+                    piece to AndValidator(listOf())
                 )
 
                 else -> {}
@@ -116,7 +121,7 @@ class ClassicCheckersSetup {
             globalValidators,
             createValidatorsMap(),
             listOf(NoEnemyLeftValidator()),
-            mover
+            movers
         )
     }
 
