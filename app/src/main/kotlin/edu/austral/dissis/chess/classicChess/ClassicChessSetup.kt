@@ -1,9 +1,11 @@
 package edu.austral.dissis.chess.classicChess
 
-import edu.austral.dissis.chess.mover.ChessMover
+import edu.austral.dissis.chess.mover.CastlingMover
+import edu.austral.dissis.chess.mover.CommonChessMover
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.enemies.IsEatingEnemyValidator
+import edu.austral.dissis.chess.validators.other.CastlingValidator
 import edu.austral.dissis.chess.validators.other.CheckMateValidator
 import edu.austral.dissis.chess.validators.other.CheckValidator
 import edu.austral.dissis.chess.validators.other.NotEatingKingValidator
@@ -11,10 +13,11 @@ import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
 import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.mover.PromotionMover
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.AndValidator
 import edu.austral.dissis.common.validators.OrValidator
-import edu.austral.dissis.common.validators.moves.IsEatingNoOneValidator
+import edu.austral.dissis.common.validators.moves.NullDestinationValidator
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
 import edu.austral.dissis.common.validators.orientation.NotBackwardsValidator
 import edu.austral.dissis.common.validators.moves.NotEatingSameColor
@@ -28,6 +31,33 @@ import edu.austral.dissis.common.validators.orientation.VerticalValidator
 import types.PieceType
 
 class ClassicChessSetup {
+    private val queenValidator = AndValidator(
+        listOf(
+            OrValidator(
+                listOf(
+                    AndValidator(
+                        listOf(
+                            VerticalValidator(),
+                            VerticalObstacleValidator()
+                        )
+                    ),
+                    AndValidator(
+                        listOf(
+                            HorizontalValidator(),
+                            HorizontalObstacleValidator()
+                        )
+                    ),
+                    AndValidator(
+                        listOf(
+                            DiagonalValidator(),
+                            DiagonalObstacleValidator()
+                        )
+                    )
+                )
+            )
+        )
+    )
+    val movers = listOf(CastlingMover(), CommonChessMover(), PromotionMover(PieceType.QUEEN, queenValidator))
 
     val globalValidations = listOf(
         IsInsideBoardValidator(),
@@ -123,7 +153,7 @@ class ClassicChessSetup {
                                     VerticalObstacleValidator(),
                                     QMoveNSquaresValidator(0, 2, piece.type),
                                     NotBackwardsValidator(),
-                                    IsEatingNoOneValidator(),
+                                    NullDestinationValidator(),
                                 )
                             ),
                             AndValidator(
@@ -132,7 +162,7 @@ class ClassicChessSetup {
                                     VerticalObstacleValidator(),
                                     AmountValidator(1),
                                     NotBackwardsValidator(),
-                                    IsEatingNoOneValidator(),
+                                    NullDestinationValidator(),
                                 )
                             ),
                             AndValidator(
@@ -235,7 +265,14 @@ class ClassicChessSetup {
                                     DiagonalObstacleValidator(),
                                     AmountValidator(1)
                                 )
-                            )
+                            ),
+                            AndValidator(
+                                listOf(
+                                    HorizontalValidator(),
+                                    AmountValidator(2),
+                                    CastlingValidator()
+                                )
+                            ),
                         )
                     )
                     map = map + mapOf(piece to AndValidator(listOf(or)))
@@ -252,7 +289,7 @@ class ClassicChessSetup {
     fun createClassicGame(): Game {
         return Game(
             createClassicBoard(), ColorType.WHITE, globalValidations,
-            createValidatorsMap(), listOf(CheckMateValidator()), listOf(ChessMover())
+            createValidatorsMap(), listOf(CheckMateValidator()), movers
         )
     }
 }

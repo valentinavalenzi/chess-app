@@ -2,7 +2,7 @@ package edu.austral.dissis.checkers.classicCheckers
 
 import edu.austral.dissis.checkers.mover.CaptureMover
 import edu.austral.dissis.checkers.mover.CommonCheckersMover
-import edu.austral.dissis.checkers.mover.PromotionMover
+import edu.austral.dissis.common.mover.PromotionMover
 import edu.austral.dissis.checkers.validators.IsEatingValidator
 import edu.austral.dissis.checkers.validators.MustCaptureValidator
 import edu.austral.dissis.common.validators.game.NoEnemyLeftValidator
@@ -14,7 +14,7 @@ import edu.austral.dissis.common.game.Game
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.AndValidator
 import edu.austral.dissis.common.validators.OrValidator
-import edu.austral.dissis.common.validators.moves.IsEatingNoOneValidator
+import edu.austral.dissis.common.validators.moves.NullDestinationValidator
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator
 import edu.austral.dissis.common.validators.orientation.NotBackwardsValidator
 import edu.austral.dissis.common.validators.moves.NotEatingSameColor
@@ -23,7 +23,7 @@ import types.PieceType
 
 class ClassicCheckersSetup {
 
-    val movers = listOf(CommonCheckersMover(), CaptureMover(), PromotionMover(PieceType.KING))
+    val movers = listOf(CommonCheckersMover(), CaptureMover(), PromotionMover(PieceType.KING, AndValidator(listOf())))
     val globalValidators = listOf(
         NotEatingSameColor(), IsInsideBoardValidator(),
                                     DiagonalValidator(), MustCaptureValidator())
@@ -96,7 +96,7 @@ class ClassicCheckersSetup {
                         listOf(
                             OrValidator(
                                 listOf(
-                                    AndValidator(listOf(NotBackwardsValidator(), IsEatingNoOneValidator(), AmountValidator(1))),
+                                    AndValidator(listOf(NotBackwardsValidator(), NullDestinationValidator(), AmountValidator(1))),
                                     AndValidator(listOf(NotBackwardsValidator(), IsEatingValidator(), AmountValidator(2)))
                                 )
                             )

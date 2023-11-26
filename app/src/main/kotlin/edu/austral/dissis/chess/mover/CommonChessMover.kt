@@ -4,13 +4,13 @@ import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.game.Game
 import edu.austral.dissis.common.mover.Mover
 
-class ChessMover : Mover {
+class CommonChessMover : Mover {
     override fun canExecuteMove(game: Game, movement: Movement): Boolean {
-        TODO("Not yet implemented")
+        return game.board.getPieceAt(movement.from) != null
     }
 
     override fun move(game: Game, movement: Movement): Game {
         val newBoard = game.board.move(movement)
-        return game.copy(newBoard, game.switchTurn())
+        return game.copy(newBoard, game.switchTurn(), game.newPieceRules(newBoard, movement))
     }
 }

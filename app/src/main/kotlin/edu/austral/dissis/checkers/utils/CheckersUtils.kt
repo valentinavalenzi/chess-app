@@ -33,42 +33,39 @@ fun canEatMore(game: Game, square: Square): Boolean {
 
     return false // No more capture moves found
 }
-
 fun findValidCheckersMoves(square: Square, game: Game): List<Movement> {
     val piece = game.board.getPieceAt(square) ?: return emptyList()
-    val validMoves = mutableListOf<Movement>()
 
     val validDirections = if (piece.color == ColorType.WHITE) listOf(2, -2) else listOf(-2, 2)
+    val validMoves = mutableListOf<Movement>()
+
     validDirections.forEach { dx ->
-        findValidMovesInDirection(dx, validDirections, square, game, piece, validMoves)
+        val dyValues = validDirections
+
+        dyValues.forEach { dy ->
+            val destination = Square(square.x + dx, square.y + dy)
+
+            if (isValidCheckerMove(piece, square, destination, game)) {
+                validMoves.add(Movement(square, destination, game.board))
+            }
+        }
     }
 
     return validMoves
 }
 
-fun findValidMovesInDirection(
-    dx: Int,
-    directions: List<Int>,
-    square: Square,
-    game: Game,
-    piece: Piece,
-    validMoves: MutableList<Movement>
-) {
-    directions.forEach { dy ->
-        val destination = Square(square.x + dx, square.y + dy)
-
-        if (isValidMove(piece, square, destination, game) && isInsideBoard(destination, game)) {
-            validMoves.add(Movement(square, destination, game.board))
-        }
-    }
+fun isValidCheckerMove(piece: Piece, from: Square, to: Square, game: Game): Boolean {
+    val movement = Movement(from, to, game.board)
+    return isValidMove(piece, movement, game) && isInsideBoard(to, game)
 }
 
-fun isValidMove(piece: Piece, from: Square, to: Square, game: Game): Boolean {
-    val movement = Movement(from, to, game.board)
-    return game.pieceRules[piece]?.validate(movement, game) is ValidResult
+fun isValidMove(piece: Piece, movement: Movement, game: Game): Boolean {
+    val validator = game.pieceRules[piece]
+    return validator?.validate(movement, game) is ValidResult
 }
 
 fun isInsideBoard(square: Square, game: Game): Boolean {
     return IsInsideBoardValidator().validate(Movement(square, square, game.board), game) is ValidResult
 }
+
 

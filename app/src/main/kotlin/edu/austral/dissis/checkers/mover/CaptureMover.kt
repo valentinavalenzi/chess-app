@@ -26,7 +26,7 @@ class CaptureMover : Mover {
     private fun hasEaten(game: Game, newGame: Game): Boolean {
         val gamePieces = game.board.getAllPiecesOfColor(game.turn.opposite())
         val newGamePieces = newGame.board.getAllPiecesOfColor(game.turn.opposite())
-        return (gamePieces.size - newGamePieces.size) > 0
+        return gamePieces.size > newGamePieces.size
     }
 
 }

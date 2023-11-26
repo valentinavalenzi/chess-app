@@ -11,4 +11,8 @@ data class Piece(val color: ColorType, val type: PieceType, val movementQuantity
         return id
     }
 
+    fun hasMoved() : Boolean {
+        return movementQuantity > 0
+    }
+
 }
