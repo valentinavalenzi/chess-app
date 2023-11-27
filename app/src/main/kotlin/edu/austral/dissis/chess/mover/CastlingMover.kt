@@ -16,29 +16,20 @@ class CastlingMover : Mover {
         if (movement.to.x - movement.from.x == 2) {
             // short castling
             val rookPosition = Square((movement.from.x + 3), movement.from.y)
-            val newBoard = game.board
-                .move(movement)
-                .move(Movement(rookPosition, Square((movement.from.x + 1), movement.from.y), game.board))
-            return game.copy(newBoard, game.switchTurn(), game.newPieceRules(newBoard, movement))
-                        .copy(newBoard, game.switchTurn(),
-                            game.newPieceRules(
-                                newBoard,
-                                Movement(rookPosition, Square((movement.from.x + 1), movement.from.y), game.board)
-                            )
-                        )
-
+            var newBoard = game.board.move(movement)
+            var newGame = game.copy(newBoard, game.switchTurn(), game.newPieceRules(newBoard, movement))
+            newBoard = newBoard.move(Movement(rookPosition, Square((movement.from.x + 1), movement.from.y), game.board))
+            newGame = newGame.copy(newBoard, newGame.turn, newGame.newPieceRules(newBoard,
+                Movement(rookPosition, Square((movement.from.x + 1), movement.from.y), newGame.board)))
+            return newGame
         }
         // long castling
         val rookPosition = Square((movement.from.x - 4), movement.from.y)
-        val newBoard = game.board
-            .move(movement)
-            .move(Movement(rookPosition, Square((movement.from.x - 1), movement.from.y), game.board))
-        return game.copy(newBoard, game.switchTurn(), game.newPieceRules(newBoard, movement))
-                    .copy(newBoard, game.switchTurn(),
-                        game.newPieceRules(
-                            newBoard,
-                            Movement(rookPosition, Square((movement.from.x - 1), movement.from.y), game.board)
-                        )
-                    )
+        var newBoard = game.board.move(movement)
+        var newGame = game.copy(newBoard, game.switchTurn(), game.newPieceRules(newBoard, movement))
+        newBoard = newBoard.move(Movement(rookPosition, Square((movement.from.x - 1), movement.from.y), newGame.board))
+        newGame = newGame.copy(newBoard, newGame.turn, newGame.newPieceRules(newBoard,
+                            Movement(rookPosition, Square((movement.from.x - 1), movement.from.y), newGame.board)))
+        return newGame
     }
 }

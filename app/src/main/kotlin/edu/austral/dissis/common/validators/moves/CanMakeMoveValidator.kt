@@ -13,8 +13,7 @@ class CanMakeMoveValidator : Validator {
     override fun validate(movement: Movement, game: Game): Result {
         val piece = game.board.getPieceAt(movement.from) ?: return InvalidResult("No piece found")
         return if (IsTurnValidator().validate(movement, game) is ValidResult &&
-            game.pieceRules[piece]?.validate(movement, game) is ValidResult
-        ) ValidResult()
+                    game.pieceRules[piece]?.validate(movement, game) is ValidResult) ValidResult()
         else InvalidResult("None of the conditions are met to make the move")
     }
 }
