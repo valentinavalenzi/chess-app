@@ -1,6 +1,6 @@
 package edu.austral.dissis.chess.capablancaChess
 
-import edu.austral.dissis.chess.classicChess.ClassicChessRules
+import edu.austral.dissis.chess.classicChess.ClassicChessPieceRules
 import edu.austral.dissis.common.factory.RulesFactory
 import edu.austral.dissis.common.validators.AndValidator
 import edu.austral.dissis.common.validators.OrValidator
@@ -15,15 +15,15 @@ import types.PieceType
 
 class CapablancaPieceRules : RulesFactory {
 
-    private val classicChessRules = ClassicChessRules()
+    private val classicChessPieceRules = ClassicChessPieceRules()
     override fun createRules(type: PieceType): AndValidator {
         return when (type) {
-            PieceType.PAWN -> classicChessRules.createPawnRules()
-            PieceType.KNIGHT -> classicChessRules.createKnightRules()
-            PieceType.BISHOP -> classicChessRules.createBishopRules()
-            PieceType.ROOK -> classicChessRules.createRookRules()
-            PieceType.QUEEN -> classicChessRules.createQueenRules()
-            PieceType.KING -> classicChessRules.createKingRules()
+            PieceType.PAWN -> classicChessPieceRules.createPawnRules()
+            PieceType.KNIGHT -> classicChessPieceRules.createKnightRules()
+            PieceType.BISHOP -> classicChessPieceRules.createBishopRules()
+            PieceType.ROOK -> classicChessPieceRules.createRookRules()
+            PieceType.QUEEN -> classicChessPieceRules.createQueenRules()
+            PieceType.KING -> classicChessPieceRules.createKingRules()
             PieceType.ARCHBISHOP -> createArchbishopRules()
             PieceType.CHANCELLOR -> createChancellorRules()
             else -> throw IllegalArgumentException("Invalid piece type")

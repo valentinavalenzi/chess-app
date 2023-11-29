@@ -1,10 +1,10 @@
-package edu.austral.dissis.common
+package edu.austral.dissis.common.factory
 
-import edu.austral.dissis.common.factory.PieceFactory
+import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.types.ColorType
 import types.PieceType
 
-class PieceFactory : PieceFactory {
+class EveryPieceFactory : PieceFactory {
     override fun createPiece(type: PieceType, color: ColorType, id: Int): Piece {
         return Piece(color, type, 0, id)
     }

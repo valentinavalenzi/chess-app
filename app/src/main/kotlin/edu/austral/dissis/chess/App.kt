@@ -7,6 +7,8 @@ import edu.austral.dissis.chess.adapter.ChessAdapter
 import edu.austral.dissis.chess.capablancaChess.CapablancaBoardFactory
 import edu.austral.dissis.chess.capablancaChess.CapablancaPieceRules
 import edu.austral.dissis.chess.capablancaChess.CapablancaSetup
+import edu.austral.dissis.chess.classicChess.ClassicChessBoardFactory
+import edu.austral.dissis.chess.classicChess.ClassicChessPieceRules
 import edu.austral.dissis.chess.classicChess.ClassicChessSetup
 import edu.austral.dissis.chess.gui.CachedImageResolver
 import edu.austral.dissis.chess.gui.DefaultImageResolver
@@ -23,8 +25,8 @@ fun main() {
 }
 
 class ChessGameApplication : Application() {
-    private val classicChessSetup = ClassicChessSetup()
-    private val gameEngine = ChessAdapter(classicChessSetup.createClassicGame())
+    private val classicChessSetup = ClassicChessSetup(ClassicChessBoardFactory(), ClassicChessPieceRules())
+    private val gameEngine = ChessAdapter(classicChessSetup.createGame())
 //    private val capablancaSetup = CapablancaSetup(CapablancaBoardFactory(), CapablancaPieceRules())
 //    private val gameEngine = ChessAdapter(capablancaSetup.createCapablancaChess())
     private val imageResolver = CachedImageResolver(DefaultImageResolver())

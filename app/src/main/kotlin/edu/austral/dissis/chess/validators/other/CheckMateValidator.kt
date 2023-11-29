@@ -42,7 +42,6 @@ class CheckMateValidator : EndGameValidator {
         }
     }
 
-
     private fun simulateMove(game: Game, movement: Movement): Game {
         val newBoard = game.board.move(movement)
         return game.copy(board = newBoard, turn = game.turn.opposite())

@@ -14,7 +14,7 @@ import edu.austral.dissis.common.validators.obstacles.VerticalObstacleValidator
 import edu.austral.dissis.common.validators.orientation.*
 import types.PieceType
 
-class ClassicChessRules : RulesFactory {
+class ClassicChessPieceRules : RulesFactory {
     override fun createRules(type: PieceType): AndValidator {
         return when (type) {
             PieceType.PAWN -> createPawnRules()
