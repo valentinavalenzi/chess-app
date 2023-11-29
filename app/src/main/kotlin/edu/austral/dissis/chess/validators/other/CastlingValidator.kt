@@ -2,12 +2,11 @@ package edu.austral.dissis.chess.validators.other
 
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.results.Result
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.validators.Validator
-import kotlin.math.absoluteValue
 
 class CastlingValidator : Validator {
     override fun validate(movement: Movement, game: Game): Result {

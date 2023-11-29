@@ -1,7 +1,7 @@
 package edu.austral.dissis.common.validators.orientation
 
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.results.Result

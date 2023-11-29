@@ -5,7 +5,7 @@ import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Square
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.types.ColorType
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import types.PieceType
 
 fun movesFinder(pieceFrom: Square, game: Game): List<Movement> {
@@ -14,6 +14,18 @@ fun movesFinder(pieceFrom: Square, game: Game): List<Movement> {
     for ((to, toPiece) in game.board.getAllPiecesOfColor(piece.color.opposite())) {
         val move = Movement(pieceFrom, to, game.board)
         if (game.pieceRules[piece]?.validate(move, game) is ValidResult) {
+            validMoves.add(move)
+        }
+    }
+    return validMoves
+}
+
+fun movesToFinder(to: Square, game: Game): List<Movement> {
+    val piece = game.board.getPieceAt(to) ?: return emptyList()
+    val validMoves = mutableListOf<Movement>()
+    for ((from, fromPiece) in game.board.getAllPiecesOfColor(piece.color.opposite())) {
+        val move = Movement(from, to, game.board)
+        if (game.pieceRules[fromPiece]?.validate(move, game) is ValidResult) {
             validMoves.add(move)
         }
     }

@@ -4,10 +4,9 @@ import edu.austral.dissis.checkers.utils.calculateMiddleSquare
 import edu.austral.dissis.common.validators.moves.PawnCanPromoteValidator
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Piece
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.validators.AndValidator
-import edu.austral.dissis.common.validators.Validator
 import types.PieceType
 
 class PromotionMover (val newPieceType: PieceType, val newValidators: AndValidator): Mover {

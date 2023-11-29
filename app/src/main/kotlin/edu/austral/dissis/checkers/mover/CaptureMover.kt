@@ -4,7 +4,7 @@ import edu.austral.dissis.checkers.utils.calculateMiddleSquare
 import edu.austral.dissis.checkers.utils.canEatMore
 import edu.austral.dissis.checkers.validators.IsEatingValidator
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.mover.Mover
 import edu.austral.dissis.common.results.ValidResult
 

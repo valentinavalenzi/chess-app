@@ -1,7 +1,7 @@
 package edu.austral.dissis.chess.mover
 
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.mover.Mover
 
 class CommonChessMover : Mover {

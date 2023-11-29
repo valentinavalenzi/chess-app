@@ -3,7 +3,7 @@ package edu.austral.dissis.checkers.utils
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.game.IsInsideBoardValidator

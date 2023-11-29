@@ -1,8 +1,5 @@
-package edu.austral.dissis.common.game
+package edu.austral.dissis.common
 
-import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.Piece
-import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.mover.Mover
 import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.results.ValidResult

@@ -3,7 +3,7 @@ package edu.austral.dissis.chess.mover
 import edu.austral.dissis.chess.validators.other.CastlingValidator
 import edu.austral.dissis.common.Movement
 import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.mover.Mover
 import edu.austral.dissis.common.results.ValidResult
 

@@ -10,7 +10,7 @@ import edu.austral.dissis.common.results.ValidResult
 import edu.austral.dissis.common.validators.Validator
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.utils.getKingPosition
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 
 class CheckValidator : Validator {
     override fun validate(movement: Movement, game: Game): Result {
@@ -21,7 +21,7 @@ class CheckValidator : Validator {
         }
     }
 
-    fun isInCheck(movement: Movement, game: Game): Boolean {
+    private fun isInCheck(movement: Movement, game: Game): Boolean {
         val board = movement.board
         val piece = board.getPieceAt(movement.from)
         val pieceColor: ColorType = piece?.color ?: throw NoSuchElementException("No piece found")
@@ -30,7 +30,7 @@ class CheckValidator : Validator {
         return isCheck(newBoard, pieceColor, game)
     }
 
-    private fun isCheck(board: Board, color: ColorType, game: Game): Boolean {
+    fun isCheck(board: Board, color: ColorType, game: Game): Boolean {
         val kingPosition: Square = getKingPosition(board, color) ?: throw NoSuchElementException("No king found")
         val enemyPieces = board.getAllPiecesOfColor(color.opposite())
         for ((position, enemyPiece) in enemyPieces) {
@@ -41,8 +41,10 @@ class CheckValidator : Validator {
 
     private fun isAttackingKing(board: Board, from: Square, enemyPiece: Piece, kingPosition: Square, game: Game): Boolean {
         val movement = Movement(from, kingPosition, board)
-        // if it's invalid it's because an enemy could make a movement to eat the king
-        return (game.pieceRules[enemyPiece]?.validate(movement, game) is ValidResult) &&
+        // if it's valid it's because an enemy could make a movement to eat the king
+        val rules = game.pieceRules[enemyPiece] ?: throw NoSuchElementException("No piece found")
+        val result = rules.validate(movement, game)
+        return (result is ValidResult) &&
                 (NotEatingKingValidator().validate(movement, game) is InvalidResult)
     }
 

@@ -1,7 +1,7 @@
 package edu.austral.dissis.checkers.validators
 
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.game.FinishGameResult
 import edu.austral.dissis.common.results.game.GameResult
 import edu.austral.dissis.common.results.game.NextMoveResult

@@ -3,7 +3,7 @@ package edu.austral.dissis.checkers.validators
 import edu.austral.dissis.checkers.utils.calculateMiddleSquare
 import edu.austral.dissis.checkers.utils.findValidCheckersMoves
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.results.Result
 import edu.austral.dissis.common.results.ValidResult

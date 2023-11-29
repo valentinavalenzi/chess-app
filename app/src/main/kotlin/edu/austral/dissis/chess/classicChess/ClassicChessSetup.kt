@@ -12,7 +12,7 @@ import edu.austral.dissis.chess.validators.other.NotEatingKingValidator
 import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.mover.PromotionMover
 import edu.austral.dissis.common.types.ColorType
 import edu.austral.dissis.common.validators.AndValidator
@@ -277,6 +277,7 @@ class ClassicChessSetup {
                     )
                     map = map + mapOf(piece to AndValidator(listOf(or)))
                 }
+                else -> {}
             }
         }
         return map

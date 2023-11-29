@@ -1,7 +1,7 @@
 package edu.austral.dissis.common.validators.obstacles
 
 import edu.austral.dissis.common.Movement
-import edu.austral.dissis.common.game.Game
+import edu.austral.dissis.common.Game
 import edu.austral.dissis.common.results.InvalidResult
 import edu.austral.dissis.common.validators.Validator;
 import edu.austral.dissis.common.results.Result;
@@ -19,7 +19,7 @@ class HorizontalObstacleValidator : Validator {
         currentSquare = currentSquare.copy(x = currentSquare.x + xDirection)
 
         while (currentSquare != movement.to) {
-            if (game.board.getPieceAt(currentSquare) != null) {
+            if (movement.board.getPieceAt(currentSquare) != null) {
                 return InvalidResult("There is a piece in the way!")
             }
             currentSquare = currentSquare.copy(x = currentSquare.x + xDirection)
