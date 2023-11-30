@@ -1,4 +1,4 @@
-package server
+package edu.austral.dissis.server
 
 import edu.austral.dissis.chess.classicChess.ClassicChessBoardFactory
 import edu.austral.dissis.chess.classicChess.ClassicChessPieceRules

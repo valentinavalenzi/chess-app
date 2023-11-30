@@ -7,6 +7,7 @@ import edu.austral.dissis.chess.validators.other.CastlingValidator
 import edu.austral.dissis.common.factory.RulesFactory
 import edu.austral.dissis.common.validators.AndValidator
 import edu.austral.dissis.common.validators.OrValidator
+import edu.austral.dissis.common.validators.moves.NotEatingSameColor
 import edu.austral.dissis.common.validators.moves.NullDestinationValidator
 import edu.austral.dissis.common.validators.obstacles.DiagonalObstacleValidator
 import edu.austral.dissis.common.validators.obstacles.HorizontalObstacleValidator
@@ -39,6 +40,7 @@ class ClassicChessPieceRules : RulesFactory {
                                 QMoveNSquaresValidator(0, 2, PieceType.PAWN),
                                 NotBackwardsValidator(),
                                 NullDestinationValidator(),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
@@ -48,6 +50,7 @@ class ClassicChessPieceRules : RulesFactory {
                                 AmountValidator(1),
                                 NotBackwardsValidator(),
                                 NullDestinationValidator(),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
@@ -55,7 +58,8 @@ class ClassicChessPieceRules : RulesFactory {
                                 DiagonalValidator(),
                                 AmountValidator(1),
                                 IsEatingEnemyValidator(),
-                                NotBackwardsValidator()
+                                NotBackwardsValidator(),
+                                NotEatingSameColor()
                             )
                         )
                     )
@@ -65,14 +69,15 @@ class ClassicChessPieceRules : RulesFactory {
     }
 
     fun createKnightRules(): AndValidator {
-        return AndValidator(listOf(LValidator()))
+        return AndValidator(listOf(LValidator(), NotEatingSameColor()))
     }
 
     fun createBishopRules(): AndValidator {
         return AndValidator(
             listOf(
                 DiagonalValidator(),
-                DiagonalObstacleValidator()
+                DiagonalObstacleValidator(),
+                NotEatingSameColor()
             )
         )
     }
@@ -85,13 +90,15 @@ class ClassicChessPieceRules : RulesFactory {
                         AndValidator(
                             listOf(
                                 VerticalValidator(),
-                                VerticalObstacleValidator()
+                                VerticalObstacleValidator(),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 HorizontalValidator(),
-                                HorizontalObstacleValidator()
+                                HorizontalObstacleValidator(),
+                                NotEatingSameColor()
                             )
                         )
                     )
@@ -108,19 +115,22 @@ class ClassicChessPieceRules : RulesFactory {
                         AndValidator(
                             listOf(
                                 VerticalValidator(),
-                                VerticalObstacleValidator()
+                                VerticalObstacleValidator(),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 HorizontalValidator(),
-                                HorizontalObstacleValidator()
+                                HorizontalObstacleValidator(),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 DiagonalValidator(),
-                                DiagonalObstacleValidator()
+                                DiagonalObstacleValidator(),
+                                NotEatingSameColor()
                             )
                         )
                     )
@@ -138,28 +148,31 @@ class ClassicChessPieceRules : RulesFactory {
                             listOf(
                                 VerticalValidator(),
                                 VerticalObstacleValidator(),
-                                AmountValidator(1)
+                                AmountValidator(1),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 HorizontalValidator(),
                                 HorizontalObstacleValidator(),
-                                AmountValidator(1)
+                                AmountValidator(1),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 DiagonalValidator(),
                                 DiagonalObstacleValidator(),
-                                AmountValidator(1)
+                                AmountValidator(1),
+                                NotEatingSameColor()
                             )
                         ),
                         AndValidator(
                             listOf(
                                 HorizontalValidator(),
                                 AmountValidator(2),
-                                CastlingValidator()
+                                CastlingValidator(),
                             )
                         ),
                     )

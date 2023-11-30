@@ -24,9 +24,11 @@ fun availableMovesFinder(pieceFrom: Square, game: Game): List<Movement> {
     val piece = game.board.getPieceAt(pieceFrom) ?: return emptyList()
     val validMoves = mutableListOf<Movement>()
     for (toSquare in game.board.getAllSquares()) {
-        val move = Movement(pieceFrom, toSquare, game.board)
-        if (game.pieceRules[piece]?.validate(move, game) is ValidResult) {
-            validMoves.add(move)
+        if (toSquare != pieceFrom) {
+            val move = Movement(pieceFrom, toSquare, game.board)
+            if (game.pieceRules[piece]?.validate(move, game) is ValidResult) {
+                validMoves.add(move)
+            }
         }
     }
     return validMoves

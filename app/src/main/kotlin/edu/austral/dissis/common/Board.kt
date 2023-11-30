@@ -36,8 +36,8 @@ data class Board (val availablePieces: Map<Square, Piece>, val rowAmount: Int, v
 
     fun getAllSquares() : List<Square> {
         val squares = mutableListOf<Square>()
-        for (i in 0 until rowAmount) {
-            for (j in 0 until columnAmount) {
+        for (i in 1 until rowAmount + 1) {
+            for (j in 1 until columnAmount + 1) {
                 squares.add(Square(i, j))
             }
         }

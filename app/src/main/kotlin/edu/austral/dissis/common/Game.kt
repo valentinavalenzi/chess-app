@@ -22,6 +22,8 @@ data class Game(
 ) {
 
     fun move(movement: Movement): GameResult {
+        if (winningConditions(movement, winningValidations, this) is FinishGameResult) return FinishGameResult(turn.opposite())
+
         if (CanMakeMoveValidator().validate(movement, this) is ValidResult) {
             val checkGeneralValidations = generalValidations(movement)
             if (checkGeneralValidations is SameMoveResult) return checkGeneralValidations

@@ -1,4 +1,4 @@
-package server
+package edu.austral.dissis.server
 
 import com.fasterxml.jackson.core.type.TypeReference
 import edu.austral.dissis.chess.gui.*
@@ -51,7 +51,8 @@ class Server (private var game: Game,
             .addMessageListener(
                 "move",
                 object : TypeReference<Message<Move>> () {},
-                MoveListener(this))
+                MoveListener(this)
+            )
             .addMessageListener(
                 "init",
                 object : TypeReference<Message<Unit>> () {},

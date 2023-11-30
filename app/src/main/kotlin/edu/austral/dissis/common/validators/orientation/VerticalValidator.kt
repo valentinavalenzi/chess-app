@@ -9,6 +9,6 @@ import edu.austral.dissis.common.results.ValidResult
 
 class VerticalValidator : Validator {
     override fun validate(movement: Movement, game: Game): Result {
-        return if (movement.from.x == movement.to.x) ValidResult() else InvalidResult("It's not a vertical movement!")
+        return if (movement.from.x == movement.to.x && movement.from.y != movement.to.y) ValidResult() else InvalidResult("It's not a vertical movement!")
     }
 }

@@ -22,7 +22,7 @@ class CapablancaSetup (val capablancaBoardFactory : BoardFactory, val capablanca
     override fun createGame() : Game {
 
         val board = capablancaBoardFactory.createBoard(8, 10)
-        val generalRules = listOf(IsInsideBoardValidator(), NotEatingSameColor(), NotEatingKingValidator(), CheckValidator())
+        val generalRules = listOf(IsInsideBoardValidator(), NotEatingSameColor())
         val pieceRules = assignRules(board)
         val winningConditions = listOf(NoEnemyLeftValidator())
         val movers = listOf(CastlingMover(), CommonChessMover(),

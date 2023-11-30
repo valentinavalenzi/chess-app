@@ -5,10 +5,7 @@ import edu.austral.dissis.chess.mover.CommonChessMover
 import edu.austral.dissis.chess.validators.amounts.AmountValidator
 import edu.austral.dissis.chess.validators.amounts.QMoveNSquaresValidator
 import edu.austral.dissis.chess.validators.enemies.IsEatingEnemyValidator
-import edu.austral.dissis.chess.validators.other.CastlingValidator
-import edu.austral.dissis.chess.validators.other.CheckMateValidator
-import edu.austral.dissis.chess.validators.other.CheckValidator
-import edu.austral.dissis.chess.validators.other.NotEatingKingValidator
+import edu.austral.dissis.chess.validators.other.*
 import edu.austral.dissis.common.Board
 import edu.austral.dissis.common.Piece
 import edu.austral.dissis.common.Square
@@ -33,7 +30,6 @@ import types.PieceType
 
 class ClassicChessSetup (val classicChessBoardFactory: ClassicChessBoardFactory,
                          val classicChessPieceRules: ClassicChessPieceRules) : GameSetup {
-
 
     override fun createGame(): Game {
 

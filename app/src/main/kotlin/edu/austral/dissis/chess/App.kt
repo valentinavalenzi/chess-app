@@ -25,10 +25,10 @@ fun main() {
 }
 
 class ChessGameApplication : Application() {
-    private val classicChessSetup = ClassicChessSetup(ClassicChessBoardFactory(), ClassicChessPieceRules())
-    private val gameEngine = ChessAdapter(classicChessSetup.createGame())
-//    private val capablancaSetup = CapablancaSetup(CapablancaBoardFactory(), CapablancaPieceRules())
-//    private val gameEngine = ChessAdapter(capablancaSetup.createCapablancaChess())
+//    private val classicChessSetup = ClassicChessSetup(ClassicChessBoardFactory(), ClassicChessPieceRules())
+//    private val gameEngine = ChessAdapter(classicChessSetup.createGame())
+    private val capablancaSetup = CapablancaSetup(CapablancaBoardFactory(), CapablancaPieceRules())
+    private val gameEngine = ChessAdapter(capablancaSetup.createGame())
     private val imageResolver = CachedImageResolver(DefaultImageResolver())
 
     companion object {
